@@ -1,7 +1,7 @@
 class Prismio < Formula
   desc "Compiled, statically typed language with compiler-managed memory"
   homepage "https://prismio.org"
-  license "MIT"
+  license "Apache-2.0"
 
   on_macos do
     if Hardware::CPU.arm?
@@ -23,12 +23,28 @@ class Prismio < Formula
   end
 
   def install
-    archive = Dir["prismio-*"].first
-    libexec.install Dir["#{archive}/*"]
-    bin.install_symlink libexec/"bin/prismio"
+    archive = Dir["prismio-*"].find { |path| File.directory?(path) }
+    odie "release archive did not contain an extracted Prismio directory" unless archive
+
+    bin.install "#{archive}/bin/prismio"
+    lib.install "#{archive}/lib/runtime"
+    lib.install "#{archive}/lib/runtime.hash"
+    prefix.install "#{archive}/stdlib"
+    prefix.install "#{archive}/LICENSE"
   end
 
   test do
     assert_match "prismio 0.1.0", shell_output("#{bin}/prismio --version")
+
+    (testpath/"hello.psm").write <<~EOS
+      import std.io
+
+      fn main() -> Int {
+          println("ok")
+          return 0
+      }
+    EOS
+    system bin/"prismio", "build", testpath/"hello.psm", "-o", testpath/"hello"
+    assert_equal "ok\n", shell_output(testpath/"hello")
   end
 end
