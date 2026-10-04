@@ -23,7 +23,12 @@ class Prismio < Formula
   end
 
   def install
-    archive = Dir["prismio-*"].find { |path| File.directory?(path) }
+    archive = if File.directory?("bin") && File.directory?("lib") &&
+                File.directory?("stdlib")
+                "."
+              else
+                Dir["prismio-*"].find { |path| File.directory?(path) }
+              end
     odie "release archive did not contain an extracted Prismio directory" unless archive
 
     bin.install "#{archive}/bin/prismio"
