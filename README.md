@@ -3,7 +3,7 @@
 This tap packages the official Prismio release archives for Homebrew.
 
 ```sh
-brew tap prismio-lang/prismio
+brew tap prismio-lang/tap
 brew install prismio
 ```
 
