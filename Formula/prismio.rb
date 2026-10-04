@@ -1,7 +1,6 @@
 class Prismio < Formula
   desc "Compiled, statically typed language with compiler-managed memory"
   homepage "https://prismio.org"
-  version "0.1.0"
   license "MIT"
 
   on_macos do
