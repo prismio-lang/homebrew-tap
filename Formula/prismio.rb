@@ -19,6 +19,8 @@ class Prismio < Formula
     elsif Hardware::CPU.intel?
       url "https://github.com/prismio-lang/prismio/releases/download/v0.1.0/prismio-0.1.0-linux-x64.tar.gz"
       sha256 "9e4c11ca32bed81e1063fa03a5bf5f4ea8201a113040c51410185f57789a3230"
+    else
+      odie "Unsupported architecture: #{Hardware::CPU.arch}"
     end
   end
 
